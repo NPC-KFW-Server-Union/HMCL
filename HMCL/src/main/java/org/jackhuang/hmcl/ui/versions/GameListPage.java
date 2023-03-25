@@ -135,7 +135,6 @@ public class GameListPage extends DecoratorAnimatedPage implements DecoratorPage
 
             Profiles.registerVersionsListener(this::loadVersions);
 
-            setOnFailedAction(e -> Controllers.navigate(Controllers.getDownloadPage()));
         }
 
         private void loadVersions(Profile profile) {

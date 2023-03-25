@@ -73,6 +73,7 @@ import static org.jackhuang.hmcl.util.i18n.I18n.i18n;
 public final class MainPage extends StackPane implements DecoratorPage {
     private final ReadOnlyObjectWrapper<State> state = new ReadOnlyObjectWrapper<>();
 
+    private RootPage rootPage = null;
     private final PopupMenu menu = new PopupMenu();
     private final JFXPopup popup = new JFXPopup(menu);
 
@@ -170,6 +171,14 @@ public final class MainPage extends StackPane implements DecoratorPage {
         });
         StackPane.setAlignment(launchPane, Pos.BOTTOM_RIGHT);
         {
+            JFXButton showSettingsButton = new JFXButton();
+            showSettingsButton.setPrefHeight(100);
+            showSettingsButton.setPrefWidth(55);
+            showSettingsButton.setTranslateX(-95-55);
+            showSettingsButton.setOnAction(e -> {
+                this.rootPage.toggleLeftSideBarVBox();
+            });
+
             JFXButton launchButton = new JFXButton();
             launchButton.setPrefWidth(230);
             launchButton.setPrefHeight(55);
@@ -218,7 +227,7 @@ public final class MainPage extends StackPane implements DecoratorPage {
             graphic.setTranslateX(12);
             menuButton.setGraphic(graphic);
 
-            launchPane.getChildren().setAll(launchButton, separator, menuButton);
+            launchPane.getChildren().setAll(launchButton, separator, menuButton, showSettingsButton);
         }
 
         getChildren().setAll(announcementPane, updatePane, launchPane);
@@ -235,7 +244,8 @@ public final class MainPage extends StackPane implements DecoratorPage {
         Bindings.bindContent(menu.getContent(), versionNodes);
     }
 
-    public MainPage() {
+    public MainPage(RootPage rootPage) {
+        this.rootPage = rootPage;
         if (Metadata.isNightly()) {
             announcementPane.getChildren().add(new AnnouncementCard(i18n("update.channel.nightly.title"), i18n("update.channel.nightly.hint")));
         } else if (Metadata.isDev()) {

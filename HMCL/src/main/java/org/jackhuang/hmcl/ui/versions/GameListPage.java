@@ -87,15 +87,6 @@ public class GameListPage extends DecoratorAnimatedPage implements DecoratorPage
             }
 
             AdvancedListBox bottomLeftCornerList = new AdvancedListBox()
-                    .addNavigationDrawerItem(installNewGameItem -> {
-                        installNewGameItem.setTitle(i18n("install.new_game"));
-                        installNewGameItem.setLeftGraphic(VersionPage.wrap(SVG::plusCircleOutline));
-                    })
-                    .addNavigationDrawerItem(installModpackItem -> {
-                        installModpackItem.setTitle(i18n("install.modpack"));
-                        installModpackItem.setLeftGraphic(VersionPage.wrap(SVG::pack));
-                        installModpackItem.setOnAction(e -> Versions.importModpack());
-                    })
                     .addNavigationDrawerItem(refreshItem -> {
                         refreshItem.setTitle(i18n("button.refresh"));
                         refreshItem.setLeftGraphic(VersionPage.wrap(SVG::refresh));
@@ -106,7 +97,7 @@ public class GameListPage extends DecoratorAnimatedPage implements DecoratorPage
                         globalManageItem.setLeftGraphic(VersionPage.wrap(SVG::gearOutline));
                         globalManageItem.setOnAction(e -> modifyGlobalGameSettings());
                     });
-            FXUtils.setLimitHeight(bottomLeftCornerList, 40 * 4 + 12 * 2);
+            FXUtils.setLimitHeight(bottomLeftCornerList, 40 * 2 + 12 * 2);
             setLeft(pane, bottomLeftCornerList);
         }
 

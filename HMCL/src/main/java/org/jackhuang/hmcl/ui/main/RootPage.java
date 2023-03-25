@@ -17,7 +17,12 @@
  */
 package org.jackhuang.hmcl.ui.main;
 
+import javafx.animation.Interpolator;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
 import javafx.beans.property.ReadOnlyObjectProperty;
+import javafx.util.Duration;
 import org.jackhuang.hmcl.event.EventBus;
 import org.jackhuang.hmcl.event.RefreshedVersionsEvent;
 import org.jackhuang.hmcl.game.HMCLGameRepository;
@@ -47,10 +52,7 @@ import org.jackhuang.hmcl.util.io.CompressingUtils;
 import org.jackhuang.hmcl.util.versioning.VersionNumber;
 
 import java.io.File;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static org.jackhuang.hmcl.ui.FXUtils.runInFX;
@@ -61,6 +63,7 @@ public class RootPage extends DecoratorAnimatedPage implements DecoratorPage {
     private MainPage mainPage = null;
 
     public RootPage() {
+
         EventBus.EVENT_BUS.channel(RefreshedVersionsEvent.class)
                 .register(event -> onRefreshedVersions((HMCLGameRepository) event.getSource()));
 
@@ -70,6 +73,8 @@ public class RootPage extends DecoratorAnimatedPage implements DecoratorPage {
 
         getStyleClass().remove("gray-background");
         getLeft().getStyleClass().add("gray-background");
+        getLeft().setTranslateX(-30);
+        getLeft().setOpacity(0);
     }
 
     @Override
@@ -84,7 +89,7 @@ public class RootPage extends DecoratorAnimatedPage implements DecoratorPage {
 
     private MainPage getMainPage() {
         if (mainPage == null) {
-            MainPage mainPage = new MainPage();
+            MainPage mainPage = new MainPage(this);
             FXUtils.applyDragListener(mainPage, ModpackHelper::isFileModpackByExtension, modpacks -> {
                 File modpack = modpacks.get(0);
                 Controllers.getDecorator().startWizard(
@@ -215,5 +220,27 @@ public class RootPage extends DecoratorAnimatedPage implements DecoratorPage {
                 }
             }
         });
+    }
+
+    private boolean isLeftSideBarVBoxShowing = false;
+
+    protected void toggleLeftSideBarVBox() {
+        List<KeyFrame> keyFrames = new ArrayList<>();
+
+        if(!isLeftSideBarVBoxShowing) {
+            keyFrames.add(new KeyFrame(new Duration(350),
+                    new KeyValue(this.getLeft().opacityProperty(), 1, Interpolator.EASE_BOTH),
+                    new KeyValue(this.getLeft().translateXProperty(), 0, Interpolator.EASE_BOTH)));
+        } else {
+            keyFrames.add(new KeyFrame(new Duration(350),
+                    new KeyValue(this.getLeft().opacityProperty(), 0, Interpolator.EASE_BOTH),
+                    new KeyValue(this.getLeft().translateXProperty(), -30, Interpolator.EASE_BOTH)));
+        }
+
+        Timeline anim = new Timeline();
+        anim.getKeyFrames().addAll(keyFrames);
+        FXUtils.playAnimation(this.getLeft(), "toggle_rootpage_leftsidebar", anim);
+
+        this.isLeftSideBarVBoxShowing = !this.isLeftSideBarVBoxShowing;
     }
 }

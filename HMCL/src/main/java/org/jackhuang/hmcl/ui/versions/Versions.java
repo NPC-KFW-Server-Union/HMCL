@@ -64,11 +64,6 @@ public final class Versions {
     private Versions() {
     }
 
-    public static void addNewGame() {
-        Controllers.getDownloadPage().showGameDownloads();
-        Controllers.navigate(Controllers.getDownloadPage());
-    }
-
     public static void importModpack() {
         Profile profile = Profiles.getSelectedProfile();
         if (profile.getRepository().isLoaded()) {
@@ -233,9 +228,7 @@ public final class Versions {
 
     private static boolean checkVersionForLaunching(Profile profile, String id) {
         if (id == null || !profile.getRepository().isLoaded() || !profile.getRepository().hasVersion(id)) {
-            Controllers.dialog(i18n("version.empty.launch"), i18n("launch.failed"), MessageDialogPane.MessageType.ERROR, () -> {
-                Controllers.navigate(Controllers.getDownloadPage());
-            });
+            Controllers.dialog(i18n("version.empty.launch"), i18n("launch.failed"), MessageDialogPane.MessageType.ERROR);
             return false;
         } else {
             return true;

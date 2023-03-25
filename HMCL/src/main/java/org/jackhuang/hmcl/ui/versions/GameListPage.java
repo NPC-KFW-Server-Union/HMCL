@@ -90,7 +90,6 @@ public class GameListPage extends DecoratorAnimatedPage implements DecoratorPage
                     .addNavigationDrawerItem(installNewGameItem -> {
                         installNewGameItem.setTitle(i18n("install.new_game"));
                         installNewGameItem.setLeftGraphic(VersionPage.wrap(SVG::plusCircleOutline));
-                        installNewGameItem.setOnAction(e -> Versions.addNewGame());
                     })
                     .addNavigationDrawerItem(installModpackItem -> {
                         installModpackItem.setTitle(i18n("install.modpack"));
@@ -145,7 +144,6 @@ public class GameListPage extends DecoratorAnimatedPage implements DecoratorPage
 
             Profiles.registerVersionsListener(this::loadVersions);
 
-            setOnFailedAction(e -> Controllers.navigate(Controllers.getDownloadPage()));
         }
 
         private void loadVersions(Profile profile) {

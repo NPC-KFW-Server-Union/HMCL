@@ -1,10 +1,11 @@
 package top.eati.npc_kfw_union;
 
-import jdk.jfr.internal.Repository;
 import org.eclipse.jgit.api.Git;
+import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.storage.file.FileRepositoryBuilder;
 
 import javax.imageio.IIOException;
+import java.io.IOException;
 import java.nio.file.Paths;
 
 public class GitManipulator {
@@ -17,16 +18,12 @@ public class GitManipulator {
         }
         return gitManipulator;
     }
-    public Git getRepo(){
+    public Git getRepo() throws IOException {
         if(git == null){
-            try{
                 Repository repository = new FileRepositoryBuilder()
                         .setGitDir(Paths.get("",".git").toFile())
                         .build();
-            }catch (IIOException e){
-                e.printStackTrace();
-            }
         }
         return git;
+        }
     }
-}

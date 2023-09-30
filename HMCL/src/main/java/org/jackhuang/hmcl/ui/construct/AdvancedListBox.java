@@ -20,10 +20,14 @@ package org.jackhuang.hmcl.ui.construct;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.Skin;
+import javafx.scene.control.SkinBase;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import org.jackhuang.hmcl.ui.FXUtils;
+import org.jackhuang.hmcl.ui.decorator.DecoratorAnimatedPage;
 
 import java.util.function.Consumer;
 
@@ -32,7 +36,6 @@ public class AdvancedListBox extends ScrollPane {
 
     {
         setContent(container);
-
         FXUtils.smoothScrolling(this);
 
         setFitToHeight(true);
@@ -40,6 +43,8 @@ public class AdvancedListBox extends ScrollPane {
         setHbarPolicy(ScrollBarPolicy.NEVER);
 
         container.getStyleClass().add("advanced-list-box-content");
+        container.getStyleClass().add("gray-background");
+        //container.set
     }
 
     public AdvancedListBox add(Node child) {
@@ -106,4 +111,5 @@ public class AdvancedListBox extends ScrollPane {
     public void clear() {
         container.getChildren().clear();
     }
+
 }

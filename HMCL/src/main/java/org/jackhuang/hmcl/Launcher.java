@@ -29,6 +29,7 @@ import org.jackhuang.hmcl.setting.SambaException;
 import org.jackhuang.hmcl.task.AsyncTaskExecutor;
 import org.jackhuang.hmcl.task.Schedulers;
 import org.jackhuang.hmcl.ui.Controllers;
+import org.jackhuang.hmcl.ui.construct.MessageDialogPane;
 import org.jackhuang.hmcl.upgrade.UpdateChecker;
 import org.jackhuang.hmcl.upgrade.UpdateHandler;
 import org.jackhuang.hmcl.util.CrashReporter;
@@ -38,6 +39,7 @@ import org.jackhuang.hmcl.util.io.JarUtils;
 import org.jackhuang.hmcl.util.platform.Architecture;
 import org.jackhuang.hmcl.util.platform.CommandBuilder;
 import org.jackhuang.hmcl.util.platform.OperatingSystem;
+import top.eati.npc_kfw_union.GitManipulator;
 
 import java.io.File;
 import java.io.IOException;
@@ -72,6 +74,7 @@ public final class Launcher extends Application {
         } catch (Throwable e) {
             LOG.log(Level.WARNING, "Failed to get prism pipeline", e);
         }
+
 
         try {
             try {

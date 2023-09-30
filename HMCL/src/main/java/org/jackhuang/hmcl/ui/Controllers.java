@@ -58,6 +58,7 @@ import org.jackhuang.hmcl.util.io.FileUtils;
 import org.jackhuang.hmcl.util.platform.Architecture;
 import org.jackhuang.hmcl.util.platform.JavaVersion;
 import org.jackhuang.hmcl.util.platform.OperatingSystem;
+import top.eati.npc_kfw_union.GitManipulator;
 
 import java.io.File;
 import java.util.List;
@@ -201,6 +202,8 @@ public final class Controllers {
         stage.setTitle(Metadata.FULL_TITLE);
         stage.initStyle(StageStyle.TRANSPARENT);
         stage.setScene(scene);
+
+
 
         if (!Architecture.SYSTEM_ARCH.isX86() && globalConfig().getPlatformPromptVersion() < 1) {
             Runnable continueAction = () -> globalConfig().setPlatformPromptVersion(1);

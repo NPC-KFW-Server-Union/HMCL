@@ -17,11 +17,20 @@
  */
 package org.jackhuang.hmcl.ui.main;
 
+import com.jfoenix.controls.JFXButton;
 import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.beans.property.ReadOnlyObjectProperty;
+import javafx.event.EventHandler;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
+import javafx.stage.WindowEvent;
 import javafx.util.Duration;
 import org.jackhuang.hmcl.event.EventBus;
 import org.jackhuang.hmcl.event.RefreshedVersionsEvent;
@@ -50,8 +59,10 @@ import org.jackhuang.hmcl.upgrade.UpdateChecker;
 import org.jackhuang.hmcl.util.TaskCancellationAction;
 import org.jackhuang.hmcl.util.io.CompressingUtils;
 import org.jackhuang.hmcl.util.versioning.VersionNumber;
+import top.eati.npc_kfw_union.GitManipulator;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -72,10 +83,27 @@ public class RootPage extends DecoratorAnimatedPage implements DecoratorPage {
             onRefreshedVersions(Profiles.selectedProfileProperty().get().getRepository());
 
         getStyleClass().remove("gray-background");
-        getLeft().getStyleClass().add("gray-background");
+        //getLeft().getStyleClass().add("gray-background");
         getLeft().setTranslateX(-30);
         getLeft().setOpacity(0);
+
+        Controllers.getStage().setOnShowing(new EventHandler<WindowEvent>() {
+            @Override
+            public void handle(WindowEvent event) {
+                try {
+                    GitManipulator.createInstance( (String errText) -> Controllers.dialog(errText, null, MessageDialogPane.MessageType.ERROR));
+                } catch (RuntimeException e) {
+                    throw new RuntimeException(e);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+                GitManipulator.getInstance().commitAllChangeOfTrackedFile();
+            }
+        });
+
     }
+
+
 
     @Override
     public ReadOnlyObjectProperty<State> stateProperty() {
@@ -166,8 +194,21 @@ public class RootPage extends DecoratorAnimatedPage implements DecoratorPage {
                     .startCategory(i18n("settings.launcher.general").toUpperCase(Locale.ROOT))
                     .add(launcherSettingsItem);
 
+
+            JFXButton btn = new JFXButton();
+            btn.setPrefHeight(60);
+            btn.setPrefHeight(20);
+            btn.setBackground(Background.fill(Color.BLUEVIOLET));
+
+            HBox hbox = new HBox();
+            hbox.getChildren().setAll(sideBar, btn);
+            hbox.setFillHeight(true);
+
+
+            VBox.setVgrow(hbox, Priority.ALWAYS);
+
             // the root page, with the sidebar in left, navigator in center.
-            setLeft(sideBar);
+            setLeft(hbox);
             setCenter(getSkinnable().getMainPage());
         }
 
